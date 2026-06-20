@@ -99,32 +99,64 @@ graph TD
 
 ## 🚀 Getting Started
 
-### 1. Install Dependencies
+Follow these steps to run the AIRMAN RAG System locally:
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/AkasK09/AIRMAN--Document-Driven-RAG-Chat-.git
+cd AIRMAN--Document-Driven-RAG-Chat-
+```
+
+### 2. Set Up Virtual Environment (Recommended)
+It's highly recommended to use a virtual environment to manage dependencies:
+```bash
+python -m venv venv
+# On Windows:
+venv\Scripts\activate
+# On macOS/Linux:
+source venv/bin/activate
+```
+
+### 3. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Environment Variables
-Copy `.env.example` to `.env` and add your API keys:
+### 4. Configure Environment Variables
+Copy the provided `.env.example` file to create your own `.env` configuration file:
 ```bash
-GEMINI_API_KEY="your_api_key_here"
+# On Windows:
+copy .env.example .env
+# On macOS/Linux:
+cp .env.example .env
 ```
+Open `.env` in a text editor and add your API keys (e.g., `GEMINI_API_KEY`).
 
-### 3. Run Ingestion
-Load the ATPL books into the vector database:
+### 5. Run Document Ingestion
+Before you can chat, you must process the aviation manuals into the vector database. Place your ATPL PDFs in the `data/` folder, then run:
 ```bash
 python -m app.ingest --dir data
 ```
+*(This will generate the FAISS and BM25 indices inside the `./vector_store` directory.)*
 
-### 4. Run the Application
-Start both the backend API and frontend UI natively:
+### 6. Start the Backend API
+Start the FastAPI server which handles retrieval and LLM generation:
 ```bash
 python -m uvicorn app.api:app --host 127.0.0.1 --port 8000
+```
+*API docs will be available at `http://127.0.0.1:8000/docs`*
+
+### 7. Start the Chat UI
+Open a **new terminal window/tab**, activate your virtual environment again, and run the Streamlit frontend:
+```bash
 python -m streamlit run ui.py
 ```
 *Access the beautiful UI at `http://localhost:8501`*
 
-### 5. Run Evaluation
+---
+
+## 📊 Run the Evaluation Benchmark
+To test the pipeline against the 50 predefined aviation questions and generate a full `report.md`:
 ```bash
 python evaluate.py
 ```

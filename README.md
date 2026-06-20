@@ -6,6 +6,58 @@ This repository is designed to be **Production Ready** and mapped perfectly to t
 
 ---
 
+## 🏗️ System Architecture
+
+```mermaid
+graph TD
+    %% Ingestion Pipeline
+    subgraph Ingestion [Ingestion Pipeline]
+        A[Aviation PDFs] --> B(PyMuPDF Text Extraction)
+        B --> C{Parent-Child Chunking}
+        C -->|Parent Chunks 1500t| D[Metadata Store]
+        C -->|Child Chunks 300t| E(SentenceTransformers)
+        C -->|Child Chunks 300t| F(BM25 Tokenizer)
+        E --> G[(FAISS Vector Index)]
+        F --> H[(BM25 Sparse Index)]
+    end
+
+    %% Query Pipeline
+    subgraph Query [Query Pipeline]
+        I[User Query] --> J{Agentic Query Router}
+        J -->|Chitchat| K[Direct LLM Response]
+        J -->|Domain Query| L[Hybrid Retrieval]
+        
+        L --> M(FAISS Semantic Search)
+        L --> N(BM25 Keyword Search)
+        
+        M --> O[Top 100 Candidates]
+        N --> O
+        
+        O --> P{Reciprocal Rank Fusion RRF}
+        P --> Q[Top 20 Chunks]
+        
+        Q --> R{CrossEncoder Reranker}
+        R --> S[Top 5 Child Chunks]
+        
+        S --> T(Fetch Parent Context)
+        D -.-> T
+    end
+
+    %% Generation
+    subgraph Generation [Generation]
+        T --> U[LLM with Strict JSON Prompt]
+        U -->|Check Grounding| V{Validation}
+        V -->|No context found| W[Refusal Response]
+        V -->|Success| X[Final Answer with Citations]
+    end
+
+    %% Database Connections
+    G -.-> M
+    H -.-> N
+```
+
+---
+
 ## 🏆 Key Features
 
 ### 1. Correct RAG Pipeline

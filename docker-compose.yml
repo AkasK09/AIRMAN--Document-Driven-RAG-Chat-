@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  api:
+    build: .
+    container_name: aviation_rag_api
+    command: uvicorn app.api:app --host 0.0.0.0 --port 8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./vector_store:/app/vector_store
+      - ./logs:/app/logs
+    env_file:
+      - .env
+    environment:
+      - LOG_LEVEL=INFO
+    restart: unless-stopped
+
+  ui:
+    build: .
+    container_name: aviation_rag_ui
+    command: streamlit run ui.py --server.port 8501 --server.address 0.0.0.0
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./data:/app/data
+    env_file:
+      - .env
+    environment:
+      - API_URL=http://api:8000
+    depends_on:
+      - api
+    restart: unless-stopped

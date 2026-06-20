@@ -68,6 +68,15 @@ async def global_exception_handler(request: Request, exc: Exception):
         content={"detail": "An internal server error occurred. Please contact the administrator."}
     )
 
+@app.get("/")
+async def root():
+    return {
+        "status": "success",
+        "message": "AIRMAN Document Driven RAG API is running",
+        "docs": "/docs",
+        "health": "/health"
+    }
+
 @app.get("/health", tags=["Monitoring"], response_model=dict)
 async def health_check():
     """

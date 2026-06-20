@@ -6,6 +6,12 @@ from app.models import AskResponse, Citation
 
 client = TestClient(app)
 
+def test_root_endpoint():
+    response = client.get("/")
+    assert response.status_code == 200
+    assert response.json()["status"] == "success"
+    assert "running" in response.json()["message"].lower()
+
 def test_health_check():
     response = client.get("/health")
     assert response.status_code == 200

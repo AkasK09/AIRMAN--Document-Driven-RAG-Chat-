@@ -9,7 +9,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
 from app.utils import setup_logger, format_subject_name
 from app.models import IngestRequest, IngestResponse, AskRequest, AskResponse
-from app.ingest import ingest_pdf
 from app.rag import generate_rag_response
 
 logger = setup_logger(__name__)
@@ -105,6 +104,7 @@ async def ingest_document(payload: IngestRequest):
     logger.info(f"API request to ingest PDF: {pdf_path}")
     
     try:
+        from app.ingest import ingest_pdf
         num_chunks = ingest_pdf(pdf_path)
         return IngestResponse(
             status="success",

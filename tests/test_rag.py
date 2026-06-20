@@ -4,12 +4,10 @@ import pytest
 import numpy as np
 from app.rag import hybrid_search, rerank_chunks, generate_rag_response, REFUSAL_RESPONSE
 
-@patch("app.rag.get_embedding_model")
-def test_hybrid_search(mock_get_model):
-    # Mock embedding model
-    mock_model = MagicMock()
-    mock_model.encode.return_value = np.zeros((1, 1024))
-    mock_get_model.return_value = mock_model
+@patch("app.rag.get_query_embedding_api")
+def test_hybrid_search(mock_get_embedding):
+    # Mock embedding API call
+    mock_get_embedding.return_value = np.zeros((1024,))
     
     # Mock Index
     mock_index = MagicMock()
@@ -52,24 +50,20 @@ def test_hybrid_search(mock_get_model):
     assert len(results_chapter) == 1
     assert results_chapter[0]["chunk_id"] == "c3"
 
-@patch("app.rag.get_reranker_model")
-def test_rerank_chunks(mock_get_reranker):
-    mock_reranker = MagicMock()
-    # Return scores for 3 candidates
-    mock_reranker.predict.return_value = [-1.0, 5.0, 2.0]
-    mock_get_reranker.return_value = mock_reranker
-    
+def test_rerank_chunks():
     candidates = [
-        {"chunk_id": "c1", "chunk_text": "text1"},
-        {"chunk_id": "c2", "chunk_text": "text2"},
-        {"chunk_id": "c3", "chunk_text": "text3"}
+        {"chunk_id": "c1", "hybrid_score": 0.5, "chunk_text": "text1"},
+        {"chunk_id": "c2", "hybrid_score": 0.3, "chunk_text": "text2"},
+        {"chunk_id": "c3", "hybrid_score": 0.1, "chunk_text": "text3"}
     ]
     
     reranked = rerank_chunks("query", candidates, top_k=2)
     
     assert len(reranked) == 2
-    assert reranked[0]["chunk_id"] == "c2"  # Highest score (5.0)
-    assert reranked[1]["chunk_id"] == "c3"  # Second highest (2.0)
+    assert reranked[0]["chunk_id"] == "c1"
+    assert reranked[0]["reranker_score"] == 0.5
+    assert reranked[1]["chunk_id"] == "c2"
+    assert reranked[1]["reranker_score"] == 0.3
 
 @patch("app.rag.load_stores")
 @patch("app.rag.hybrid_search")

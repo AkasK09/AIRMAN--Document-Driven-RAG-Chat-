@@ -11,7 +11,7 @@ def test_health_check():
     assert response.status_code == 200
     assert response.json() == {"status": "healthy"}
 
-@patch("app.api.ingest_pdf")
+@patch("app.ingest.ingest_pdf")
 @patch("os.path.exists")
 def test_ingest_endpoint_success(mock_exists, mock_ingest):
     mock_exists.return_value = True

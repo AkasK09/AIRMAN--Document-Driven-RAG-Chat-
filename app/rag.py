@@ -6,35 +6,78 @@ import faiss
 import numpy as np
 import requests
 from openai import OpenAI
-from sentence_transformers import CrossEncoder
 
 from app.config import settings
 from app.utils import setup_logger, format_subject_name
 from app.models import Citation, AskResponse
-from app.ingest import get_embedding_model
 
 logger = setup_logger(__name__)
 
 REFUSAL_RESPONSE = "This information is not available in the provided document(s)."
 
-# Cache reranker
-_reranker_model = None
-
-def get_reranker_model() -> CrossEncoder:
-    global _reranker_model
-    if _reranker_model is None:
-        logger.info(f"Loading reranker model: {settings.RERANKER_MODEL}")
-        _reranker_model = CrossEncoder(settings.RERANKER_MODEL)
-    return _reranker_model
-
 def load_stores():
-    from app.ingest import load_or_create_vector_store
-    index, metadata, parent_mapping, bm25 = load_or_create_vector_store()
-    if index is None or index.ntotal == 0 or bm25 is None:
-        raise FileNotFoundError(
-            "Vector store files not found. Please ingest documents using the ingest endpoint or script first."
+    print("Loading FAISS...")
+    index_path = os.path.join(settings.FAISS_PATH, "faiss_index.bin")
+    metadata_path = os.path.join(settings.FAISS_PATH, "metadata.pkl")
+    parents_path = os.path.join(settings.FAISS_PATH, "parents.pkl")
+    bm25_path = settings.BM25_INDEX_PATH
+
+    if not (os.path.exists(index_path) and os.path.exists(metadata_path) and os.path.exists(bm25_path) and os.path.exists(parents_path)):
+        logger.info("Vector store files not found, importing from ingest package...")
+        from app.ingest import load_or_create_vector_store
+        index, metadata, parent_mapping, bm25 = load_or_create_vector_store()
+        if index is None or index.ntotal == 0 or bm25 is None:
+            raise FileNotFoundError(
+                "Vector store files not found. Please ingest documents using the ingest endpoint or script first."
+            )
+        return index, metadata, parent_mapping, bm25
+
+    try:
+        index = faiss.read_index(index_path)
+        print("Loading metadata...")
+        with open(metadata_path, "rb") as f:
+            metadata = pickle.load(f)
+        
+        with open(parents_path, "rb") as f:
+            parent_mapping = pickle.load(f)
+            
+        print("Loading BM25...")
+        with open(bm25_path, "rb") as f:
+            bm25 = pickle.load(f)
+            
+        print("Startup complete")
+        return index, metadata, parent_mapping, bm25
+    except Exception as e:
+        logger.error(f"Failed to load vector store from disk: {str(e)}")
+        raise e
+
+def get_query_embedding_api(query: str) -> np.ndarray:
+    model_id = settings.EMBEDDING_MODEL
+    logger.info(f"Generating query embedding via HF API for model: {model_id}")
+    api_url = f"https://api-inference.huggingface.co/pipeline/feature-extraction/{model_id}"
+    
+    try:
+        headers = {}
+        hf_token = os.getenv("HF_TOKEN")
+        if hf_token:
+            headers["Authorization"] = f"Bearer {hf_token}"
+            
+        response = requests.post(
+            api_url,
+            headers=headers,
+            json={"inputs": [query]},
+            timeout=10
         )
-    return index, metadata, parent_mapping, bm25
+        response.raise_for_status()
+        embedding = response.json()[0]
+        return np.array(embedding, dtype=np.float32)
+    except Exception as e:
+        logger.error(f"HF API embedding failed: {str(e)}. Falling back to local SentenceTransformer.")
+        from sentence_transformers import SentenceTransformer
+        logger.info(f"Loading local SentenceTransformer model: {model_id} (fallback)")
+        model = SentenceTransformer(model_id)
+        query_vector = model.encode([query], show_progress_bar=False)[0]
+        return np.array(query_vector, dtype=np.float32)
 
 def hybrid_search(
     query: str, 
@@ -50,9 +93,8 @@ def hybrid_search(
     Combines FAISS Semantic Search and BM25 Keyword Search using Reciprocal Rank Fusion (RRF).
     """
     # Semantic Search
-    model = get_embedding_model()
-    query_vector = model.encode([query], show_progress_bar=False)
-    query_vector = np.array(query_vector).astype("float32")
+    query_vector = get_query_embedding_api(query)
+    query_vector = np.array([query_vector]).astype("float32")
     faiss.normalize_L2(query_vector)
     
     # Retrieve more chunks to allow filtering and RRF
@@ -130,21 +172,15 @@ def hybrid_search(
 
 def rerank_chunks(query: str, candidates: List[Dict[str, Any]], top_k: int = 5) -> List[Dict[str, Any]]:
     """
-    Reranks the top candidate chunks using a CrossEncoder.
+    Bypasses CrossEncoder reranking to optimize memory for Render Free Tier.
+    Assigns hybrid_score as reranker_score.
     """
     if not candidates:
         return []
         
-    reranker = get_reranker_model()
-    pairs = [[query, chunk["chunk_text"]] for chunk in candidates]
-    
-    scores = reranker.predict(pairs)
-    
-    for idx, chunk in enumerate(candidates):
-        chunk["reranker_score"] = float(scores[idx])
+    for chunk in candidates:
+        chunk["reranker_score"] = chunk.get("hybrid_score", 0.0)
         
-    # Sort by reranker score
-    candidates.sort(key=lambda x: x["reranker_score"], reverse=True)
     return candidates[:top_k]
 
 

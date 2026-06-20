@@ -9,7 +9,6 @@ from openai import OpenAI
 from sentence_transformers import CrossEncoder
 
 from app.config import settings
-from app.config import settings
 from app.utils import setup_logger, format_subject_name
 from app.models import Citation, AskResponse
 from app.ingest import get_embedding_model

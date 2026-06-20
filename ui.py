@@ -135,7 +135,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Configurations & Constants
-FASTAPI_URL = os.getenv("API_URL", "http://127.0.0.1:8000")
+FASTAPI_URL = os.getenv("API_URL", "https://airman-document-driven-rag-chat.onrender.com")
 UPLOAD_FOLDER = os.path.abspath("data")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 

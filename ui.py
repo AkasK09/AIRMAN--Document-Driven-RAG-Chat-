@@ -2,6 +2,10 @@ import os
 import time
 import requests
 import streamlit as st
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Set Streamlit Page Configuration
 st.set_page_config(
@@ -135,14 +139,17 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Configurations & Constants
-FASTAPI_URL = os.getenv("API_URL", "https://airman-document-driven-rag-chat.onrender.com")
+API_URL = os.getenv(
+    "API_URL",
+    "http://localhost:8000"
+)
 UPLOAD_FOLDER = os.path.abspath("data")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Helper function to check FastAPI status
 def check_api_status() -> bool:
     try:
-        response = requests.get(f"{FASTAPI_URL}/health", timeout=2)
+        response = requests.get(f"{API_URL}/health", timeout=2)
         if response.status_code == 200 and response.json().get("status") == "healthy":
             return True
     except Exception:
@@ -182,7 +189,7 @@ with st.sidebar:
     
     if api_online:
         try:
-            res = requests.get(f"{FASTAPI_URL}/filters", timeout=5)
+            res = requests.get(f"{API_URL}/filters", timeout=5)
             if res.status_code == 200:
                 data = res.json()
                 has_ata = data.get("has_ata", False)
@@ -314,7 +321,7 @@ if prompt := st.chat_input("Ask a question based on your aviation manuals (e.g. 
             }
             
             try:
-                res = requests.post(f"{FASTAPI_URL}/ask", json=payload, timeout=60)
+                res = requests.post(f"{API_URL}/ask", json=payload, timeout=60)
                 if res.status_code == 200:
                     data = res.json()
                     answer = data.get("answer", "")

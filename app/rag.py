@@ -15,7 +15,7 @@ from app.ingest import get_embedding_model
 
 logger = setup_logger(__name__)
 
-REFUSAL_RESPONSE = "The information is not available in the provided manuals."
+REFUSAL_RESPONSE = "This information is not available in the provided document(s)."
 
 # Cache reranker
 _reranker_model = None

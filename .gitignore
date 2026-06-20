@@ -6,7 +6,6 @@ __pycache__/
 .coverage
 htmlcov/
 .env
-vector_store/
 logs/
 data/
 .vscode/

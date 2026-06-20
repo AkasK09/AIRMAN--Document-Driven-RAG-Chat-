@@ -13,7 +13,7 @@ def test_hybrid_search(mock_get_model):
     
     # Mock Index
     mock_index = MagicMock()
-    mock_index.search.return_value = (np.array([[0.8, 0.5]]), np.array([[0, 1]]))
+    mock_index.search.return_value = (np.array([[0.8, 0.5, 0.1]]), np.array([[0, 1, 2]]))
     
     # Mock BM25
     mock_bm25 = MagicMock()
@@ -78,8 +78,8 @@ def test_rerank_chunks(mock_get_reranker):
 def test_generate_rag_response_success(mock_call, mock_rerank, mock_hybrid, mock_load):
     mock_load.return_value = (MagicMock(), [], {}, MagicMock())
     
-    mock_hybrid.return_value = [{"chunk_id": "c1", "parent_chunk_id": "p1"}]
-    mock_rerank.return_value = [{"chunk_id": "c1", "document_name": "doc.pdf", "page_number": 1, "parent_chunk_id": "p1"}]
+    mock_hybrid.return_value = [{"chunk_id": "c1", "parent_chunk_id": "p1", "chunk_text": "mock text"}]
+    mock_rerank.return_value = [{"chunk_id": "c1", "document_name": "doc.pdf", "page_number": 1, "parent_chunk_id": "p1", "chunk_text": "mock text"}]
     
     mock_call.return_value = json.dumps({
         "answer": "This is a grounded answer.",
@@ -98,10 +98,12 @@ def test_generate_rag_response_success(mock_call, mock_rerank, mock_hybrid, mock
 
 @patch("app.rag.load_stores")
 @patch("app.rag.hybrid_search")
+@patch("app.rag.rerank_chunks")
 @patch("app.rag.call_llm")
-def test_generate_rag_response_llm_refusal(mock_call, mock_hybrid, mock_load):
+def test_generate_rag_response_llm_refusal(mock_call, mock_rerank, mock_hybrid, mock_load):
     mock_load.return_value = (MagicMock(), [], {}, MagicMock())
-    mock_hybrid.return_value = [{"chunk_id": "c1"}]
+    mock_hybrid.return_value = [{"chunk_id": "c1", "parent_chunk_id": "p1", "chunk_text": "mock text"}]
+    mock_rerank.return_value = [{"chunk_id": "c1", "document_name": "doc.pdf", "page_number": 1, "parent_chunk_id": "p1", "chunk_text": "mock text"}]
     
     mock_call.return_value = json.dumps({
         "answer": REFUSAL_RESPONSE,

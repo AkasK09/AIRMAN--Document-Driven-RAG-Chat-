@@ -322,7 +322,7 @@ if prompt := st.chat_input("Ask a question based on your aviation manuals (e.g. 
                     citations = data.get("citations", [])
                     retrieved_chunks = data.get("retrieved_chunks", [])
                     
-                    is_refusal = ("The information is not available" in answer)
+                    is_refusal = ("This information is not available" in answer or "The information is not available" in answer)
                     
                     # Display Answer
                     if is_refusal:

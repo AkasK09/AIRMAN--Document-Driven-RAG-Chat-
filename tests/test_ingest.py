@@ -25,8 +25,8 @@ def test_extract_text_from_pdf_with_metadata(mock_exists, mock_fitz_open):
     assert pages[0]["section"] == "Chapter 5"
     
     assert pages[1]["page_number"] == 2
-    assert pages[1]["ata_chapter"] is None
-    assert pages[1]["section"] is None
+    assert pages[1]["ata_chapter"] == "ATA 21-00"
+    assert pages[1]["section"] == "Chapter 5"
 
 @patch("app.ingest.settings")
 def test_build_hierarchical_chunks(mock_settings):

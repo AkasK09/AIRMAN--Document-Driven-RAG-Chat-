@@ -159,4 +159,7 @@ python -m streamlit run ui.py
 To test the pipeline against the 50 predefined aviation questions and generate a full `report.md`:
 ```bash
 python evaluate.py
+
 ```
+
+Deployed - https://ragbot-aviation.streamlit.app/

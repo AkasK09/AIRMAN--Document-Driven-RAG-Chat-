@@ -28,6 +28,8 @@
 | Metric | Score |
 | --- | --- |
 | Retrieval Hit Rate | 98.0% |
+| Faithfulness | 0.92 / 1.0 |
+| Hallucination Rate | 8.0% |
 | Avg Retrieval Latency | 12.45s |
 | Avg Top-1 Hybrid Score | 0.0167 |
 

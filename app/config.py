@@ -10,8 +10,6 @@ class Settings(BaseSettings):
     )
 
     OLLAMA_URL: str = Field(default="http://localhost:11434")
-    OPENAI_API_BASE: Optional[str] = Field(default=None)
-    OPENAI_API_KEY: Optional[str] = Field(default=None)
     GEMINI_API_KEY: Optional[str] = Field(default=None)
     MODEL_NAME: str = Field(default="gemini-2.5-flash")
     EMBEDDING_MODEL: str = Field(default="BAAI/bge-large-en-v1.5")

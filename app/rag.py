@@ -5,8 +5,6 @@ from typing import List, Dict, Any, Tuple
 import faiss
 import numpy as np
 import requests
-from openai import OpenAI
-
 from app.config import settings
 from app.utils import setup_logger, format_subject_name
 from app.models import Citation, AskResponse
@@ -186,7 +184,7 @@ def rerank_chunks(query: str, candidates: List[Dict[str, Any]], top_k: int = 5) 
 
 def call_llm(system_prompt: str, user_prompt: str) -> str:
     """
-    Generate text using Gemini, OpenAI compatible API, or Ollama.
+    Generate text using Gemini or Ollama.
     Attempts to return a JSON string.
     """
     if settings.GEMINI_API_KEY:
@@ -218,28 +216,6 @@ def call_llm(system_prompt: str, user_prompt: str) -> str:
             logger.error(f"Gemini API call failed: {str(e)}")
             raise RuntimeError(f"Gemini API call failed: {str(e)}")
 
-    elif settings.OPENAI_API_KEY or settings.OPENAI_API_BASE:
-        logger.info(f"Using OpenAI compatible API with model: {settings.MODEL_NAME}")
-        try:
-            client = OpenAI(
-                api_key=settings.OPENAI_API_KEY or "dummy_key",
-                base_url=settings.OPENAI_API_BASE
-            )
-            response = client.chat.completions.create(
-                model=settings.MODEL_NAME,
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": user_prompt}
-                ],
-                response_format={"type": "json_object"},
-                temperature=0.0
-            )
-            content = response.choices[0].message.content
-            if content:
-                return content.strip()
-        except Exception as e:
-            logger.error(f"OpenAI compatible API call failed: {str(e)}")
-            
     # Default: Ollama
     logger.info(f"Using Ollama API at {settings.OLLAMA_URL} with model: {settings.MODEL_NAME}")
     payload = {

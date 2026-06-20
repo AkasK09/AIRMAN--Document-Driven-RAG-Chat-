@@ -20,6 +20,11 @@
 
 ## Quantitative Metrics
 
+**Definitions:**
+- **Retrieval Hit Rate:** Did the retrieved chunks actually contain the answer?
+- **Faithfulness:** Is the answer fully grounded in retrieved text?
+- **Hallucination Rate:** Any unsupported claims count as hallucination.
+
 | Metric | Score |
 | --- | --- |
 | Retrieval Hit Rate | 98.0% |

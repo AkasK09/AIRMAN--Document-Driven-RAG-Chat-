@@ -622,6 +622,11 @@ def generate_report(
     # Quantitative Metrics
     w("## Quantitative Metrics")
     w("")
+    w("**Definitions:**")
+    w("- **Retrieval Hit Rate:** Did the retrieved chunks actually contain the answer?")
+    w("- **Faithfulness:** Is the answer fully grounded in retrieved text?")
+    w("- **Hallucination Rate:** Any unsupported claims count as hallucination.")
+    w("")
     w("| Metric | Score |")
     w("| --- | --- |")
     w(f"| Retrieval Hit Rate | {m2['retrieval_hit_rate']:.1f}% |")

@@ -1,0 +1,253 @@
+AIRMAN RAG Evaluation - 50 Predefined Questions
+==================================================
+
+ID: 1
+Category: Simple Factual
+Question: What is the definition of meteorology?
+Expected Keywords: meteorology, atmosphere, weather, science, study
+--------------------------------------------------
+ID: 2
+Category: Simple Factual
+Question: What percentage of the atmosphere is composed of nitrogen?
+Expected Keywords: nitrogen, 78, percent, atmosphere
+--------------------------------------------------
+ID: 3
+Category: Simple Factual
+Question: What is the average height of the tropopause over the Equator?
+Expected Keywords: tropopause, equator, 16, 17, 18, km, feet, height
+--------------------------------------------------
+ID: 4
+Category: Simple Factual
+Question: What is the standard sea level pressure in ISA?
+Expected Keywords: 1013, hpa, millibar, 29.92, pressure, sea level, isa
+--------------------------------------------------
+ID: 5
+Category: Simple Factual
+Question: What is the ISA temperature at mean sea level?
+Expected Keywords: 15, celsius, temperature, isa, sea level
+--------------------------------------------------
+ID: 6
+Category: Simple Factual
+Question: What does ADF stand for in radio navigation?
+Expected Keywords: automatic, direction, finder, adf
+--------------------------------------------------
+ID: 7
+Category: Simple Factual
+Question: What is the primary purpose of a VOR system?
+Expected Keywords: vor, omnidirectional, range, bearing, navigation, radial
+--------------------------------------------------
+ID: 8
+Category: Simple Factual
+Question: What does DME measure?
+Expected Keywords: dme, distance, measure, slant, range, nautical
+--------------------------------------------------
+ID: 9
+Category: Simple Factual
+Question: What is the function of an Instrument Landing System (ILS)?
+Expected Keywords: ils, instrument, landing, localizer, glide, approach
+--------------------------------------------------
+ID: 10
+Category: Simple Factual
+Question: What is a rhumb line in navigation?
+Expected Keywords: rhumb, loxodrome, constant, bearing, meridian, track
+--------------------------------------------------
+ID: 11
+Category: Simple Factual
+Question: What is the purpose of a Mercator chart?
+Expected Keywords: mercator, chart, projection, navigation, rhumb, straight
+--------------------------------------------------
+ID: 12
+Category: Simple Factual
+Question: What is the 1-in-60 rule used for?
+Expected Keywords: 1-in-60, one in sixty, track, error, distance, degree, correction
+--------------------------------------------------
+ID: 13
+Category: Simple Factual
+Question: What is the role of an Air Information Publication (AIP)?
+Expected Keywords: aip, air, information, publication, aeronautical
+--------------------------------------------------
+ID: 14
+Category: Simple Factual
+Question: What does NOTAM stand for?
+Expected Keywords: notam, notice, airmen, air, mission
+--------------------------------------------------
+ID: 15
+Category: Simple Factual
+Question: What is the purpose of a Point of Equal Time (PET)?
+Expected Keywords: pet, point, equal, time, critical, diversion
+--------------------------------------------------
+ID: 16
+Category: Simple Factual
+Question: What is the purpose of a Point of Safe Return (PSR)?
+Expected Keywords: psr, point, safe, return, no return, fuel
+--------------------------------------------------
+ID: 17
+Category: Simple Factual
+Question: What is the function of an airspeed indicator?
+Expected Keywords: airspeed, indicator, speed, pitot, static, knots
+--------------------------------------------------
+ID: 18
+Category: Simple Factual
+Question: What does a vertical speed indicator display?
+Expected Keywords: vertical, speed, indicator, climb, descent, rate, vsi
+--------------------------------------------------
+ID: 19
+Category: Simple Factual
+Question: What is the purpose of an autopilot system?
+Expected Keywords: autopilot, automatic, flight, control, pilot, workload
+--------------------------------------------------
+ID: 20
+Category: Simple Factual
+Question: What is the function of a Ground Proximity Warning System (GPWS)?
+Expected Keywords: gpws, ground, proximity, warning, terrain, alert
+--------------------------------------------------
+ID: 21
+Category: Applied
+Question: A pilot flying near the Equator wants to estimate the expected tropopause height. What value should be used?
+Expected Keywords: tropopause, equator, 16, 17, 18, km, feet
+--------------------------------------------------
+ID: 22
+Category: Applied
+Question: An aircraft is operating at 18,000 ft. How can the pilot determine the ISA temperature at that altitude?
+Expected Keywords: isa, temperature, 18000, lapse, rate, 2, degree, celsius
+--------------------------------------------------
+ID: 23
+Category: Applied
+Question: During an approach, the aircraft receives localizer and glide slope signals. Which navigation system is being used?
+Expected Keywords: ils, instrument, landing, localizer, glide, slope
+--------------------------------------------------
+ID: 24
+Category: Applied
+Question: A pilot needs the distance to a navigation beacon. Which radio navigation aid should be used?
+Expected Keywords: dme, distance, measuring, beacon
+--------------------------------------------------
+ID: 25
+Category: Applied
+Question: An aircraft drifts to the right of its planned track. How can the 1-in-60 rule be applied to regain track?
+Expected Keywords: 1-in-60, track, drift, correction, angle, degree
+--------------------------------------------------
+ID: 26
+Category: Applied
+Question: A pilot wants to follow the shortest route between two distant points on Earth. Which type of route should be used?
+Expected Keywords: great, circle, shortest, route, orthodrome
+--------------------------------------------------
+ID: 27
+Category: Applied
+Question: While planning a flight, where should a pilot look for official aeronautical information and procedures?
+Expected Keywords: aip, air, information, publication, notam
+--------------------------------------------------
+ID: 28
+Category: Applied
+Question: A NOTAM reports a runway closure. How should this information affect flight planning?
+Expected Keywords: notam, runway, closure, alternate, divert, plan
+--------------------------------------------------
+ID: 29
+Category: Applied
+Question: During flight planning, how does a strong headwind affect fuel requirements?
+Expected Keywords: headwind, fuel, consumption, ground, speed, increase, time
+--------------------------------------------------
+ID: 30
+Category: Applied
+Question: When calculating mass and balance, why is it important to ensure the center of gravity remains within limits?
+Expected Keywords: center, gravity, balance, stability, control, limit, cg
+--------------------------------------------------
+ID: 31
+Category: Applied
+Question: A pilot notices abnormal fluctuations in airspeed indications. Which system should be checked first?
+Expected Keywords: pitot, static, airspeed, system, blockage, pressure
+--------------------------------------------------
+ID: 32
+Category: Applied
+Question: During an instrument approach, the glide slope indication fails. What information remains available from the ILS?
+Expected Keywords: localizer, ils, glide, slope, lateral, guidance
+--------------------------------------------------
+ID: 33
+Category: Applied
+Question: A pilot is using VOR navigation and receives an ambiguous indication. What factors should be verified?
+Expected Keywords: vor, flag, to, from, radial, signal, cone
+--------------------------------------------------
+ID: 34
+Category: Applied
+Question: An aircraft must determine the point beyond which returning to the departure airport is no longer advantageous. Which calculation should be used?
+Expected Keywords: pet, psr, point, equal, time, return, no return
+--------------------------------------------------
+ID: 35
+Category: Applied
+Question: A pilot observes cumulonimbus clouds along the route. What operational concerns should be considered?
+Expected Keywords: cumulonimbus, thunderstorm, turbulence, icing, lightning, hail, wind
+--------------------------------------------------
+ID: 36
+Category: Applied
+Question: A flight is operating in ISA+15 conditions. How might aircraft performance be affected?
+Expected Keywords: isa, temperature, performance, density, altitude, takeoff, climb
+--------------------------------------------------
+ID: 37
+Category: Applied
+Question: A pilot receives a GPWS warning during descent. What should be the immediate response?
+Expected Keywords: gpws, warning, go around, climb, power, terrain
+--------------------------------------------------
+ID: 38
+Category: Applied
+Question: A DME indicates increasing distance despite maintaining the same heading. What could this imply about the aircraft's position?
+Expected Keywords: dme, distance, abeam, passed, station, heading
+--------------------------------------------------
+ID: 39
+Category: Applied
+Question: During route planning, why is knowledge of upper winds important?
+Expected Keywords: wind, upper, fuel, time, ground, speed, route, jet
+--------------------------------------------------
+ID: 40
+Category: Applied
+Question: An aircraft experiences moderate icing conditions. Which meteorological information should be reviewed before continuing?
+Expected Keywords: icing, temperature, freezing, level, sigmet, cloud, supercooled
+--------------------------------------------------
+ID: 41
+Category: Higher-Order Reasoning
+Question: How would a combination of strong headwinds, low temperatures, and icing conditions affect flight planning and fuel management?
+Expected Keywords: headwind, fuel, icing, temperature, performance, consumption, alternate
+--------------------------------------------------
+ID: 42
+Category: Higher-Order Reasoning
+Question: Compare the advantages and limitations of VOR navigation versus GNSS navigation for long-distance flights.
+Expected Keywords: vor, gnss, gps, accuracy, range, line of sight, satellite, coverage
+--------------------------------------------------
+ID: 43
+Category: Higher-Order Reasoning
+Question: How can meteorological forecasts and NOTAM information be combined to improve operational decision-making?
+Expected Keywords: meteorological, notam, forecast, decision, planning, weather, operational
+--------------------------------------------------
+ID: 44
+Category: Higher-Order Reasoning
+Question: Why might a great-circle route be preferred over a rhumb-line route on long-haul flights, and what navigation challenges could arise?
+Expected Keywords: great, circle, rhumb, distance, shorter, heading, change, waypoint
+--------------------------------------------------
+ID: 45
+Category: Higher-Order Reasoning
+Question: How do ISA deviations influence aircraft performance calculations and operational planning?
+Expected Keywords: isa, deviation, performance, density, altitude, temperature, pressure
+--------------------------------------------------
+ID: 46
+Category: Higher-Order Reasoning
+Question: Explain how PET and PSR can lead to different diversion decisions during an oceanic flight.
+Expected Keywords: pet, psr, diversion, oceanic, point, equal, time, return
+--------------------------------------------------
+ID: 47
+Category: Higher-Order Reasoning
+Question: If both ADF and VOR information are available, how should a pilot determine the most reliable navigation source for a specific phase of flight?
+Expected Keywords: adf, vor, accuracy, reliability, phase, approach, enroute
+--------------------------------------------------
+ID: 48
+Category: Higher-Order Reasoning
+Question: Analyze how inaccurate mass and balance calculations could affect aircraft controllability, fuel efficiency, and safety.
+Expected Keywords: mass, balance, center, gravity, control, stability, fuel, safety
+--------------------------------------------------
+ID: 49
+Category: Higher-Order Reasoning
+Question: During an instrument approach in deteriorating weather, how can ILS, weather reports, and aircraft instrumentation be used together to maintain situational awareness?
+Expected Keywords: ils, weather, instrument, approach, situational, awareness, minima
+--------------------------------------------------
+ID: 50
+Category: Higher-Order Reasoning
+Question: A flight encounters unexpected weather, navigation equipment degradation, and fuel limitations simultaneously. What factors should be prioritized to ensure a safe operational decision?
+Expected Keywords: weather, navigation, fuel, priority, safety, diversion, decision
+--------------------------------------------------

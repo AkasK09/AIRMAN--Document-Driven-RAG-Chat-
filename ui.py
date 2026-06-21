@@ -139,10 +139,13 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Configurations & Constants
-API_URL = os.getenv(
-    "API_URL",
-    "http://localhost:8000"
-)
+try:
+    API_URL = st.secrets["API_URL"]
+except Exception:
+    API_URL = os.getenv(
+        "API_URL",
+        "https://airman-document-driven-rag-chat.onrender.com"
+    )
 UPLOAD_FOLDER = os.path.abspath("data")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
